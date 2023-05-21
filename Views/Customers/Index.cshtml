@@ -1,0 +1,32 @@
+﻿@model Vidly.ViewModels.CustomersViewModel
+@{
+
+    ViewData["Title"] = "Customers";
+
+}
+
+<div class="data-table">
+    <h1 class="display-4">Customers</h1>
+    @if (Model.Customers != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Customer</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model.Customers)
+                {
+                    <tr>
+                        <td><a href="@Url.Action("Details", "Customers", new { Id = customer.Id})">@customer.Name</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } else
+{
+            <h3>We don't have any customers yet.</h3>
+}
+</div>
+
