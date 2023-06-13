@@ -25,9 +25,7 @@ _UpgradeReport_Files/
 bin/
 obj/
 .git/
-.git
 .vs/
-.vs
 TestResults/
 ###################
 # Web publish log #
