@@ -13,6 +13,8 @@
             <thead>
                 <tr>
                     <th scope="col">Customer</th>
+                    <th scope="col">Discount Rate</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +22,7 @@
                 {
                     <tr>
                         <td><a href="@Url.Action("Details", "Customers", new { Id = customer.Id})">@customer.Name</a></td>
+                        <td>@customer.MembershipType.DiscountRate%</td>
                     </tr>
                 }
             </tbody>
