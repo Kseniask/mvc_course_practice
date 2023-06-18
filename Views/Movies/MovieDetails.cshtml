@@ -1,0 +1,15 @@
+﻿@model Vidly.ViewModels.MovieDetailsViewModel
+@{
+    ViewData["Title"] = "Movie Details";
+}
+<div class="container">
+    <h2>@Model.Movie.Name</h2>
+    <ul>
+        <li>Genre: @Model.Movie.Genre.Name</li>
+        <li>Release Date: @Model.Movie.ReleaseDate.ToString("ddd, MMM d, yyyy")</li>
+        <li>Date Added: @Model.Movie.ReleaseDate.ToString("ddd, MMM d, yyyy")</li>
+        <li>Number in stock: @Model.Movie.NumberInStock</li>
+
+
+    </ul>
+</div>

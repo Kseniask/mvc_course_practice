@@ -22,6 +22,7 @@
                 {
                     <tr>
                         <td><a href="@Url.Action("Details", "Customers", new { Id = customer.Id})">@customer.Name</a></td>
+                        <td>@customer.MembershipType.Name</td>
                         <td>@customer.MembershipType.DiscountRate%</td>
                     </tr>
                 }

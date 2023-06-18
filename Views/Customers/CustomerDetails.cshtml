@@ -3,5 +3,13 @@
     ViewData["Title"] = "Customer Details";
 }
 <div class="container">
-    <h2>@Model.Name</h2>
+    <h2>@Model.CustomerData.Name</h2>
+    <ul>
+        <li>Membership Type: @Model.Membership.Name</li>
+        @if (@Model.CustomerData.Birthdate != null)
+        {
+            <li>Bidth Date: @Model.CustomerData.Birthdate.Value.ToString("dd-MM-yyyy")</li>
+        }
+        
+    </ul>
 </div>

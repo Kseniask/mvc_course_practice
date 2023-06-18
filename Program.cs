@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,11 @@ builder.Configuration
 var connectionString = builder.Configuration.GetConnectionString("VidlyDbConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = "285457030509514";
+    options.AppSecret = "e9b0ce8a57d325264020346d50f594b6";
+});
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 var app = builder.Build();
 
@@ -30,7 +36,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllerRoute(
     name: "MoviesByReleaseDate",
     pattern: "movies/released/{year}/{month}",

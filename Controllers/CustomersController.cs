@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Vidly.Models;
 using Vidly.ViewModels;
-using Vidly.Utilities;
 
 namespace Vidly.Controllers
 {
@@ -33,8 +30,9 @@ namespace Vidly.Controllers
         public IActionResult Details(int id)
         {
             var customer = _context.Customers.SingleOrDefault(customer => customer.Id == id);
+            var membership = _context.MembershipType.SingleOrDefault(membership => membership.Id == customer.MembershipTypeId);
             if (customer == null) return NotFound();
-            return View("CustomerDetails",new CustomerDetailsViewModel { Name = customer.Name});
+            return View("CustomerDetails",new CustomerDetailsViewModel { CustomerData = customer, Membership = membership });
         }
     }
 }

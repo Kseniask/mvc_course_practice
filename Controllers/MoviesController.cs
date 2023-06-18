@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Vidly.Models;
 using Vidly.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,7 +7,22 @@ namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
-        // GET: /<controller>/
+        private ApplicationDbContext _context;
+
+        public MoviesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult Index(int? pageIndex, string sortby)
+        {
+            var viewModel = new MoviesViewModel
+            {
+                Movies = _context.Movies.Include(movie => movie.Genre).ToList(),
+            };
+            return View(viewModel);
+        }
+
         public IActionResult Random()
         {
             var movie = new Movie() { Name = "Shrek!" };
@@ -35,15 +45,6 @@ namespace Vidly.Controllers
             return Content("id = " + id);
         }
 
-        public IActionResult Index(int? pageIndex, string sortby)
-        {
-            if (!pageIndex.HasValue)
-                pageIndex = 1;
-            if (String.IsNullOrEmpty(sortby))
-                sortby = "Name";
-
-            return Content(String.Format("pageIndex={0},&sortby={1}", pageIndex, sortby));
-        }
 
         // custom route using MapRoute
         public IActionResult ByReleaseDate(int year, int month)
@@ -51,12 +52,18 @@ namespace Vidly.Controllers
             return Content(year + "/" + month);
         }
 
-        [Route("movies/released/{year}")]
+        [Route("Movies/Released/{year}")]
         public IActionResult ByReleaseYear(int year)
         {
             return Content("release year: " + year);
         }
 
+        public IActionResult Details(int id)
+        {
+            var movie = _context.Movies.Include(movie => movie.Genre).SingleOrDefault(movie => movie.Id == id);
+            if (movie == null) return NotFound();
+            return View("MovieDetails", new MovieDetailsViewModel { Movie = movie });
+        }
     }
 }
 
