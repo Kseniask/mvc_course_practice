@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
-using Microsoft.AspNetCore.Authentication.Facebook;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

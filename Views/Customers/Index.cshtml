@@ -21,7 +21,7 @@
                 @foreach (var customer in Model.Customers)
                 {
                     <tr>
-                        <td><a href="@Url.Action("Details", "Customers", new { Id = customer.Id})">@customer.Name</a></td>
+                        <td><a href="@Url.Action("Edit", "Customers", new { Id = customer.Id})">@customer.Name</a></td>
                         <td>@customer.MembershipType.Name</td>
                         <td>@customer.MembershipType.DiscountRate%</td>
                     </tr>
