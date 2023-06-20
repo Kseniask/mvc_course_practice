@@ -1,6 +1,3 @@
-﻿using System;
-using Vidly.Models;
-
 namespace Vidly.ViewModels
 {
     public class CustomersViewModel

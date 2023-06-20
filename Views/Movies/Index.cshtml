@@ -5,6 +5,7 @@
 
 <div class="data-table">
     <h1 class="display-4">Movies</h1>
+    <a href="/Movies/New" class="btn btn-primary btn-lg" role="button">New Movie</a>
     @if (Model.Movies != null)
     {
         <table class="table">
@@ -19,7 +20,7 @@
                 @foreach (var movie in Model.Movies)
                 {
                     <tr>
-                        <td><a href="@Url.Action("Details", "Movies", new { Id = movie.Id})">@movie.Name</a></td>
+                        <td><a href="@Url.Action("Edit", "Movies", new { Id = movie.Id})">@movie.Name</a></td>
                         <td>@movie.Genre.Name</td>
                     </tr>
                 }

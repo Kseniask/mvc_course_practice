@@ -1,8 +1,16 @@
-﻿.new-customer-form {
+﻿form {
     width: 400px;
 }
 
-.new-customer-form label {
+form label {
     padding: 8px 0 4px 0;
+}
+
+.field-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border: 2px solid red;
 }
 
