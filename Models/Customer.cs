@@ -17,6 +17,7 @@ namespace Vidly.Models
 
         // Display attr here is for form label name
         [Display(Name = "Date of Birth")]
+        [Min18YearsIfAMember]
         public DateTime? Birthdate { get; set; }
     }
 }
