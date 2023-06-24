@@ -1,3 +1,5 @@
+using static Vidly.Utilities.Constants;
+
 namespace Vidly.Models
 {
     public class Min18YearsIfAMember :ValidationAttribute
@@ -7,7 +9,7 @@ namespace Vidly.Models
             // object instance that gives access to the containing class (Customer)
             var customer = (Customer)validationContext.ObjectInstance;
 
-            if(customer.MembershipTypeId == 0 || customer.MembershipTypeId == 1)
+            if(customer.MembershipTypeId is (byte)MembershipTypes.Unknown or (byte)MembershipTypes.PayAsYouGo)
                 return ValidationResult.Success;
 
             if(customer.Birthdate == null)

@@ -6,11 +6,13 @@ form label {
     padding: 8px 0 4px 0;
 }
 
-.field-validation-error {
+.field-validation-error, .validation-summary-errors {
     color: red;
 }
 
 .input-validation-error {
     border: 2px solid red;
 }
+
+
 
