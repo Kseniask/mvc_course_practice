@@ -12,6 +12,7 @@ namespace Vidly.Mapping
             CreateMap<Movie, MovieDTO>();
             CreateMap<MovieDTO, Movie>();
             CreateMap<MembershipType, MembershipTypeDTO>();
+            CreateMap<Genre, GenreDTO>();
         }
     }
 }

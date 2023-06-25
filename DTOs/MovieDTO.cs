@@ -8,6 +8,7 @@ namespace Vidly.DTOs
         [StringLength(255)]
         public string Name { get; set; }
 
+        public GenreDTO Genre { get; set; }
         public int GenreId { get; set; }
 
         [Display(Name = "Release Date")]

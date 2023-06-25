@@ -20,20 +20,24 @@ namespace Vidly.Controllers.Api
         //GET /api/movies
         public IEnumerable<MovieDTO> GetMovies()
         {
-            return _context.Movies.ToList().Select(_mapper.Map<Movie, MovieDTO>);
+            return _context.Movies
+                .Include(m => m.Genre)
+                .ToList()
+                .Select(_mapper.Map<Movie, MovieDTO>);
         }
 
         //GET /api/movie
         [HttpGet("{id}")]
         public ActionResult<MovieDTO> GetMovie(int id)
         {
-            var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+            var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
             if (movie == null) return NotFound();
 
             return Ok(_mapper.Map<Movie, MovieDTO>(movie));
         }
 
         // POST /api/movie
+        [HttpPost]
         public ActionResult<MovieDTO> CreateMovie(MovieDTO movieDTO)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -57,7 +61,7 @@ namespace Vidly.Controllers.Api
         }
 
         // DELETE /api/movie/1
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public void DeleteMovie(int id)
         {
             if (!ModelState.IsValid) throw new BadHttpRequestException("Invalid entry");
