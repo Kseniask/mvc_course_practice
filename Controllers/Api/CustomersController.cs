@@ -1,12 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using Vidly.DTOs;
 
 namespace Vidly.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/customers")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -20,14 +19,19 @@ namespace Vidly.Controllers.Api
         //GET /api/customers
         public IEnumerable<CustomerDTO> GetCustomers()
         {
-            return _context.Customers.ToList().Select(_mapper.Map<Customer, CustomerDTO>);
+            return _context.Customers
+                .Include(c => c.MembershipType)
+                .ToList()
+                .Select(_mapper.Map<Customer, CustomerDTO>);
         }
 
-        //GET /api/customer
-        [Route("/{id}")]
+        //GET /api/customers
+        [HttpGet("{id}")]
         public ActionResult<CustomerDTO> GetCustomer(int id)
         {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            var customer = _context.Customers
+                .Include(c => c.MembershipType)
+                .SingleOrDefault(c => c.Id == id);
             if (customer == null) return NotFound();
 
             return Ok(_mapper.Map<Customer, CustomerDTO>(customer));
@@ -45,8 +49,8 @@ namespace Vidly.Controllers.Api
             return Created(new Uri(Request.GetDisplayUrl() + "/" + customer.Id), customerDTO);
         }
 
-        // PUT /api/customer/1
-        [HttpPut]
+        // PUT /api/customers/1
+        [HttpPut("{id}")]
         public void UpdateCustomer(int id, CustomerDTO customerDTO) {
             if (!ModelState.IsValid) throw new BadHttpRequestException("Invalid entry");
 
@@ -57,8 +61,8 @@ namespace Vidly.Controllers.Api
             _context.SaveChanges();
         }
 
-        // DELETE /api/customer/1
-        [HttpDelete]
+        // DELETE /api/customers/1
+        [HttpDelete("{id}")]
         public void DeleteCustomer(int id)
         {
             if (!ModelState.IsValid) throw new BadHttpRequestException("Invalid entry");

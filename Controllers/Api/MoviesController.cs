@@ -6,7 +6,7 @@ using Vidly.DTOs;
 
 namespace Vidly.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/movies")]
     [ApiController]
     public class MoviesController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace Vidly.Controllers.Api
         }
 
         //GET /api/movie
-        [Route("/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<MovieDTO> GetMovie(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
@@ -34,7 +34,6 @@ namespace Vidly.Controllers.Api
         }
 
         // POST /api/movie
-        [HttpPost]
         public ActionResult<MovieDTO> CreateMovie(MovieDTO movieDTO)
         {
             if (!ModelState.IsValid) return BadRequest();

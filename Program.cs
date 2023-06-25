@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddControllers();
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
@@ -57,17 +56,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseAuthentication();
-app.MapControllerRoute(
-    name: "MoviesByReleaseDate",
-    pattern: "movies/released/{year}/{month}",
-    new
-    {
-        controller = "Movies",
-        action = "ByReleaseDate"
-    },
-    new { year = @"\d{4}", month = @"/d{2}" });
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+ {
+     endpoints.MapControllerRoute(
+         name: "default",
+         pattern: "{controller}/{action}/{id}", defaults: new { controller = "Home", action = "Index", id = "" });
+ });
 app.Run();
