@@ -1,32 +1,44 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Json;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Vidly.Mapping;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
+
 var connectionString = builder.Configuration.GetConnectionString("VidlyDbConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<RequireHttpsAttribute>();
+});
+
 builder.Services.AddAuthentication().AddFacebook(options =>
 {
     options.AppId = "285457030509514";
     options.AppSecret = "e9b0ce8a57d325264020346d50f594b6";
 });
+
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
 var mapperConfig = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile<MappingProfile>();
 });
 builder.Services.AddAutoMapper(typeof(Program));
+
 var jsonOptions = new JsonSerializerOptions
 {
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -36,10 +48,7 @@ builder.Services.AddSingleton(jsonOptions);
 // Add more customization as needed
 // Configure camelCase in response
 
-
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -54,13 +63,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
- {
-     endpoints.MapControllerRoute(
-         name: "default",
-         pattern: "{controller}/{action}/{id}", defaults: new { controller = "Home", action = "Index", id = "" });
- });
+{
+    endpoints.MapControllers();
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();
+});
+
 app.Run();

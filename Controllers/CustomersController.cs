@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private readonly ILogger<CustomersController> _logger;

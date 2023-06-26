@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Vidly.ViewModels;
 
@@ -5,6 +6,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private ApplicationDbContext _context;
@@ -16,7 +18,11 @@ namespace Vidly.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if(User.IsInRole(RoleName.CanManageMovies))
+            {
+                return View("List");
+            }
+            return View("ReadOnlyList");
         }
 
         public IActionResult Random()
@@ -55,6 +61,7 @@ namespace Vidly.Controllers
             return View("MovieDetails", new MovieDetailsViewModel { Movie = movie });
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var grenres = _context.Genre.ToList();

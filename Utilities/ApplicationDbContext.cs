@@ -1,8 +1,9 @@
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Vidly.Utilities
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         private readonly IConfiguration _configuration;
 

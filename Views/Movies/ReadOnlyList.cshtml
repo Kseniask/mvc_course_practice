@@ -1,0 +1,41 @@
+﻿@model Vidly.ViewModels.MoviesViewModel
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<div class="data-table">
+    <h1 class="display-4">Movies</h1>
+
+    <table class="table" id="movies">
+            <thead>
+                <tr>
+                    <th scope="col">Movie</th>
+                    <th scope="col">Genre</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var table = $("#movies").DataTable({
+                ajax: {
+                    url: "api/movies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "genre.name"
+                    }
+                ]
+            });
+        });
+    </script>
+}
+

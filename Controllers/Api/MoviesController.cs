@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -8,6 +9,7 @@ namespace Vidly.Controllers.Api
 {
     [Route("api/movies")]
     [ApiController]
+    [Authorize]
     public class MoviesController : ControllerBase
     {
         private ApplicationDbContext _context;
