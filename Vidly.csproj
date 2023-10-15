@@ -16,6 +16,7 @@
     <Folder Include="Views\Customers\" />
     <Folder Include="wwwroot\lib\bootbox\" />
     <Folder Include="wwwroot\lib\data-tables\" />
+    <Folder Include="wwwroot\lib\bloodhound\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Bloodhound" Version="1.0.5921.25113" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.18" />
@@ -39,5 +41,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
+    <PackageReference Include="Twitter.Typeahead" Version="0.11.1" />
   </ItemGroup>
 </Project>

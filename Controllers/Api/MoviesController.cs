@@ -28,7 +28,7 @@ namespace Vidly.Controllers.Api
                 .Select(_mapper.Map<Movie, MovieDTO>);
         }
 
-        //GET /api/movie
+        //GET /api/movies
         [HttpGet("{id}")]
         public ActionResult<MovieDTO> GetMovie(int id)
         {
@@ -38,7 +38,18 @@ namespace Vidly.Controllers.Api
             return Ok(_mapper.Map<Movie, MovieDTO>(movie));
         }
 
-        // POST /api/movie
+
+        //GET /api/movies
+        [HttpGet("{name}")]
+        public ActionResult<MovieDTO> GetMovie(string name)
+        {
+            var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Name == name);
+            if (movie == null) return NotFound();
+
+            return Ok(_mapper.Map<Movie, MovieDTO>(movie));
+        }
+
+        // POST /api/movies
         [HttpPost]
         public ActionResult<MovieDTO> CreateMovie(MovieDTO movieDTO)
         {

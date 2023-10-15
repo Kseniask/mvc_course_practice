@@ -39,6 +39,18 @@ namespace Vidly.Controllers.Api
             return Ok(_mapper.Map<Customer, CustomerDTO>(customer));
         }
 
+        //GET /api/customers
+        [HttpGet("{name}")]
+        public ActionResult<CustomerDTO> GetCustomer(string name)
+        {
+            var customer = _context.Customers
+                .Include(c => c.MembershipType)
+                .SingleOrDefault(c => c.Name == name);
+            if (customer == null) return NotFound();
+
+            return Ok(_mapper.Map<Customer, CustomerDTO>(customer));
+        }
+
         // POST /api/customer
         [HttpPost]
         public ActionResult<CustomerDTO> CreateCustomer(CustomerDTO customerDTO)
