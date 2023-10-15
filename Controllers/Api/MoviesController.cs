@@ -20,10 +20,15 @@ namespace Vidly.Controllers.Api
             _mapper = mapper;
         }
         //GET /api/movies
-        public IEnumerable<MovieDTO> GetMovies()
+        public IEnumerable<MovieDTO> GetMovies(string query = null)
         {
-            return _context.Movies
-                .Include(m => m.Genre)
+            var moviesQuery = _context.Movies
+                .Include(m => m.Genre).Where(m => m.NumberAvailable > 0);
+            if (!String.IsNullOrEmpty(query))
+            {
+                moviesQuery = moviesQuery.Where(c => c.Name.Contains(query));
+            }
+            return moviesQuery
                 .ToList()
                 .Select(_mapper.Map<Movie, MovieDTO>);
         }
@@ -33,17 +38,6 @@ namespace Vidly.Controllers.Api
         public ActionResult<MovieDTO> GetMovie(int id)
         {
             var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
-            if (movie == null) return NotFound();
-
-            return Ok(_mapper.Map<Movie, MovieDTO>(movie));
-        }
-
-
-        //GET /api/movies
-        [HttpGet("{name}")]
-        public ActionResult<MovieDTO> GetMovie(string name)
-        {
-            var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Name == name);
             if (movie == null) return NotFound();
 
             return Ok(_mapper.Map<Movie, MovieDTO>(movie));

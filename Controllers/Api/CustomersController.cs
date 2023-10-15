@@ -19,10 +19,15 @@ namespace Vidly.Controllers.Api
             _mapper = mapper;
         }
         //GET /api/customers
-        public IEnumerable<CustomerDTO> GetCustomers()
+        public IEnumerable<CustomerDTO> GetCustomers(string query = null)
         {
-            return _context.Customers
-                .Include(c => c.MembershipType)
+            var customersQuery = _context.Customers
+                .Include(c => c.MembershipType) as IQueryable<Customer>;
+            if (!String.IsNullOrEmpty(query))
+            {
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+            }
+            return customersQuery
                 .ToList()
                 .Select(_mapper.Map<Customer, CustomerDTO>);
         }
@@ -32,20 +37,8 @@ namespace Vidly.Controllers.Api
         public ActionResult<CustomerDTO> GetCustomer(int id)
         {
             var customer = _context.Customers
-                .Include(c => c.MembershipType)
-                .SingleOrDefault(c => c.Id == id);
-            if (customer == null) return NotFound();
-
-            return Ok(_mapper.Map<Customer, CustomerDTO>(customer));
-        }
-
-        //GET /api/customers
-        [HttpGet("{name}")]
-        public ActionResult<CustomerDTO> GetCustomer(string name)
-        {
-            var customer = _context.Customers
-                .Include(c => c.MembershipType)
-                .SingleOrDefault(c => c.Name == name);
+                 .Include(c => c.MembershipType)
+                 .SingleOrDefault(c => c.Id == id);
             if (customer == null) return NotFound();
 
             return Ok(_mapper.Map<Customer, CustomerDTO>(customer));
